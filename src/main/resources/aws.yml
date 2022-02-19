@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA3MXDCHDGIXATNSUU
+      secretKey: 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
+    s3:
+      bucket: youngbin
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
