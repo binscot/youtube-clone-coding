@@ -28,7 +28,7 @@ public class UserService {
     private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
-    public User registerUser(SignupRequestDto requestDto) {
+    public User registerUser(SignupRequestDto requestDto, String profile) {
 // 회원 ID 중복 확인
         String username = requestDto.getUsername();
         Optional<User> found = userRepository.findByUsername(username);
@@ -50,7 +50,6 @@ public class UserService {
 
 // 패스워드 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());
-        String profile = requestDto.getProfile();
 
 // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;

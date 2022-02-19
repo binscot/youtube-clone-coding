@@ -30,8 +30,6 @@ public class SignupRequestDto {
     @Size(min = 4, max = 10, message = "비밀번호확인은 비밀번호와 똑같이 입력해주세요!")
     private String check_password;
 
-
-    private String profile;
     private boolean admin = false;
     private String adminToken = "";
 
