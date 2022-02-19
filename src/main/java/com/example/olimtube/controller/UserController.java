@@ -1,5 +1,6 @@
 package com.example.olimtube.controller;
 
+import com.example.olimtube.component.S3Uploader;
 import com.example.olimtube.model.User;
 import com.example.olimtube.requestDto.LoginDto;
 import com.example.olimtube.requestDto.SignupRequestDto;
@@ -13,10 +14,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -25,12 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final S3Uploader s3Uploader;
 
     // 회원 가입 요청 처리
     @ApiOperation(value = "회원가입", notes = "회원가입요청")
     @PostMapping("/signup")
-    public ResponseEntity<User> registerUser(@RequestBody SignupRequestDto requestDto) {
-        User user = userService.registerUser(requestDto);
+    public ResponseEntity<User> registerUser(
+            @RequestPart(value = "data") SignupRequestDto requestDto,
+            @RequestPart(value = "images", required = false) MultipartFile multipartFile) throws IOException {
+        String profile = s3Uploader.upload(multipartFile, "static");
+
+        User user = userService.registerUser(requestDto, profile);
         return ResponseEntity.ok(user);
     }
 
