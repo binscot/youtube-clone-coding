@@ -34,7 +34,9 @@ public class UserController {
     public ResponseEntity<User> registerUser(
             @RequestPart(value = "data") SignupRequestDto requestDto,
             @RequestPart(value = "images", required = false) MultipartFile multipartFile) throws IOException {
-        String profile = s3Uploader.upload(multipartFile, "static");
+
+        String profile = "";
+        if(!multipartFile.isEmpty()) profile = s3Uploader.upload(multipartFile, "static");
 
         User user = userService.registerUser(requestDto, profile);
         return ResponseEntity.ok(user);
