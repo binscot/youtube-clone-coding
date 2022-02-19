@@ -32,8 +32,8 @@ public class UserController {
     @ApiOperation(value = "회원가입", notes = "회원가입요청")
     @PostMapping("/signup")
     public ResponseEntity<User> registerUser(
-            @RequestPart(value = "data") SignupRequestDto requestDto,
-            @RequestPart(value = "images", required = false) MultipartFile multipartFile) throws IOException {
+            @RequestPart(value = "user_info") SignupRequestDto requestDto,
+            @RequestPart(value = "profile", required = false) MultipartFile multipartFile) throws IOException {
 
         String profile = "";
         if(!multipartFile.isEmpty()) profile = s3Uploader.upload(multipartFile, "static");
