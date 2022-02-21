@@ -19,7 +19,7 @@ public class Category {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private int categoryNumber;
 
     @ManyToOne
     @JoinColumn(name="user_id")
