@@ -27,4 +27,8 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade=CascadeType.REMOVE)
     private List<Video> videos;
+
+    public Category(int categoryNumber) {
+        this.categoryNumber = categoryNumber;
+    }
 }

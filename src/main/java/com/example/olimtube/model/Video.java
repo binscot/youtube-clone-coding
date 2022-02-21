@@ -1,5 +1,6 @@
 package com.example.olimtube.model;
 
+import com.example.olimtube.requestDto.VideoRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class Video extends Timestamped{
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     @Column(nullable = false)
     private String img;
@@ -37,4 +38,13 @@ public class Video extends Timestamped{
     @ManyToOne
     @JoinColumn(name="category_id")
     private Category category;
+
+    public Video(VideoRequestDto videoRequestDto, String img, User user, Category category) {
+        this.title = videoRequestDto.getTitle();
+        this.likes = 0;
+        this.views = 0;
+        this.img = img;
+        this.user = user;
+        this.category = category;
+    }
 }
