@@ -1,8 +1,11 @@
 package com.example.olimtube.service;
 
+import com.example.olimtube.model.Category;
 import com.example.olimtube.model.User;
 import com.example.olimtube.model.UserRoleEnum;
+import com.example.olimtube.model.Video;
 import com.example.olimtube.repository.UserRepository;
+import com.example.olimtube.repository.VideoRepository;
 import com.example.olimtube.requestDto.LoginDto;
 import com.example.olimtube.requestDto.SignupRequestDto;
 import com.example.olimtube.responseDto.CheckIdResponseDto;
@@ -15,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,6 +30,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final VideoRepository videoRepository;
     private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
@@ -107,5 +113,26 @@ public class UserService {
         userInfoResponseDto.setProfile(user.getProfile());
         userInfoResponseDto.setIs_login(false);
         return userInfoResponseDto;
+    }
+
+    public void subscribe(Long video_id, UserDetailsImpl userDetails) {
+        Video video = videoRepository.getById(video_id);
+        User user = userDetails.getUser();
+        Category category = video.getCategory();
+        List<Category> categories = new ArrayList<>();
+        categories.add(category);
+        user.updateUser(categories);
+
+    }
+
+    public List<Category> subscribesVideo(UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        return user.getCategories();
+    }
+
+
+    public List<Video> myVideo(Long user_id) {
+        User user = userRepository.getById(user_id);
+        return user.getVideos();
     }
 }

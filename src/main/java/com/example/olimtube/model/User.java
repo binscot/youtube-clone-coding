@@ -47,6 +47,10 @@ public class User extends Timestamped{
         this.role = role;
     }
 
+    public void updateUser(List<Category> categories) {
+        this.categories = categories;
+    }
+
 
 
 }
