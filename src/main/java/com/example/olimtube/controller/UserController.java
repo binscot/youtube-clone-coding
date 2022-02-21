@@ -1,7 +1,9 @@
 package com.example.olimtube.controller;
 
 import com.example.olimtube.component.S3Uploader;
+import com.example.olimtube.model.Category;
 import com.example.olimtube.model.User;
+import com.example.olimtube.model.Video;
 import com.example.olimtube.requestDto.LoginDto;
 import com.example.olimtube.requestDto.SignupRequestDto;
 import com.example.olimtube.responseDto.CheckIdResponseDto;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -63,5 +66,22 @@ public class UserController {
     public ResponseEntity<UserInfoResponseDto> userInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserInfoResponseDto userInfoResponseDto = userService.userInfo(userDetails);
         return ResponseEntity.ok(userInfoResponseDto);
+    }
+
+    //구독하기
+    @PutMapping("/subscribe/{video_id}")
+    public void subscribe(@PathVariable Long video_id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        userService.subscribe(video_id, userDetails);
+    }
+
+    //구독한 영상들
+    @GetMapping("/subscribes")
+    public List<Category> subscribesVideo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.subscribesVideo(userDetails);
+    }
+
+    @GetMapping("/myvideo/{user_id}")
+    public List<Video> myVideo(@PathVariable Long user_id){
+        return userService.myVideo(user_id);
     }
 }
