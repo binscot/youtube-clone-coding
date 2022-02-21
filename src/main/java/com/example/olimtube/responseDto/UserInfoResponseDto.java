@@ -1,6 +1,5 @@
 package com.example.olimtube.responseDto;
 
-import com.example.olimtube.model.Category;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +12,7 @@ public class UserInfoResponseDto {
     private String username;
     private String profile;
     private Boolean is_login;
-    private List<Category> categories;
+    List<UserCategoryResponseDto> userCategoryResponseDtoList;
 }
 
 
