@@ -10,8 +10,6 @@ public class UserInfoResponseDto {
     private String username;
     private String profile;
     private Boolean is_login;
-
-
 }
 
 

@@ -21,6 +21,9 @@ public class Category {
     @Column(nullable = false)
     private int categoryNumber;
 
+    @Column(nullable = false)
+    private String categoryImg;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
@@ -28,7 +31,8 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade=CascadeType.REMOVE)
     private List<Video> videos;
 
-    public Category(int categoryNumber) {
+    public Category(int categoryNumber, String categoryImg) {
         this.categoryNumber = categoryNumber;
+        this.categoryImg = categoryImg;
     }
 }

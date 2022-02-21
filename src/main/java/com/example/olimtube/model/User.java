@@ -50,8 +50,5 @@ public class User extends Timestamped{
     public void updateUser(List<Category> categories) {
         this.categories = categories;
     }
-
-
-
 }
 
