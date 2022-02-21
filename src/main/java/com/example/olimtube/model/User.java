@@ -37,18 +37,17 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user", cascade=CascadeType.REMOVE)
     private List<Video> videos;
 
-    @OneToMany(mappedBy = "user", cascade=CascadeType.REMOVE)
-    private List<Category> categories;
+    @OneToMany(cascade=CascadeType.REMOVE)
+    private List<UserCatecory> userCatecories;
+
 
     public User(String username, String password, String profile, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.profile = profile;
         this.role = role;
+
     }
 
-    public void updateUser(List<Category> categories) {
-        this.categories = categories;
-    }
 }
 
