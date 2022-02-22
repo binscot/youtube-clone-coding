@@ -1,16 +1,13 @@
 package com.example.olimtube.service;
 
-import com.example.olimtube.model.Category;
-import com.example.olimtube.model.User;
-import com.example.olimtube.model.UserRoleEnum;
-import com.example.olimtube.model.Video;
+import com.example.olimtube.model.*;
+import com.example.olimtube.repository.CategoryRepository;
+import com.example.olimtube.repository.UserCatecoryRepository;
 import com.example.olimtube.repository.UserRepository;
 import com.example.olimtube.repository.VideoRepository;
 import com.example.olimtube.requestDto.LoginDto;
 import com.example.olimtube.requestDto.SignupRequestDto;
-import com.example.olimtube.responseDto.CheckIdResponseDto;
-import com.example.olimtube.responseDto.LoginResponseDto;
-import com.example.olimtube.responseDto.UserInfoResponseDto;
+import com.example.olimtube.responseDto.*;
 import com.example.olimtube.security.JwtTokenProvider;
 import com.example.olimtube.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final VideoRepository videoRepository;
+    private final UserCatecoryRepository userCatecoryRepository;
     private static final String ADMIN_TOKEN = "AAABnv/xRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
@@ -112,27 +110,38 @@ public class UserService {
         userInfoResponseDto.setUsername(user.getUsername());
         userInfoResponseDto.setProfile(user.getProfile());
         userInfoResponseDto.setIs_login(false);
+        userInfoResponseDto.setUserCategoryResponseDtoList(showSubscribes(userDetails));
         return userInfoResponseDto;
     }
 
-    public void subscribe(Long video_id, UserDetailsImpl userDetails) {
+
+    @Transactional
+    public int subscribe(Long video_id, UserDetailsImpl userDetails) {
         Video video = videoRepository.getById(video_id);
         User user = userDetails.getUser();
         Category category = video.getCategory();
-        List<Category> categories = new ArrayList<>();
-        categories.add(category);
-        user.updateUser(categories);
+        int categoryNumber = category.getCategoryNumber();
+        List<UserCatecory> userCatecories = userCatecoryRepository.findAllByUserId(user.getId());
+        for (UserCatecory userCatecory:userCatecories){
+            if (userCatecory.getCategoryNumber() == categoryNumber){
+                throw new IllegalArgumentException("이미 구독된 채널입니다!");
+            }
+        }
+        String categoryImg = category.getCategoryImg();
+        UserCatecory userCatecory =new UserCatecory(categoryNumber,categoryImg,user);
+        userCatecoryRepository.save(userCatecory);
+        return userCatecory.getCategoryNumber();
+
 
     }
 
-    public List<Category> subscribesVideo(UserDetailsImpl userDetails) {
-        User user = userDetails.getUser();
-        return user.getCategories();
-    }
-
-
-    public List<Video> myVideo(Long user_id) {
-        User user = userRepository.getById(user_id);
-        return user.getVideos();
+    public List<UserCategoryResponseDto> showSubscribes(UserDetailsImpl userDetails) {
+        List<UserCatecory> userCatecories = userCatecoryRepository.findAllByUserId(userDetails.getUser().getId());
+        List<UserCategoryResponseDto> userCategoryResponseDtoArrayList = new ArrayList<>();
+        for (UserCatecory userCatecory:userCatecories){
+            UserCategoryResponseDto userCategoryResponseDto = new UserCategoryResponseDto(userCatecory.getCategoryNumber(), userCatecory.getCategoryImg());
+            userCategoryResponseDtoArrayList.add(userCategoryResponseDto);
+        }
+        return userCategoryResponseDtoArrayList;
     }
 }

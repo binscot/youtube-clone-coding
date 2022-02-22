@@ -3,23 +3,28 @@ package com.example.olimtube.controller;
 import com.example.olimtube.component.S3Uploader;
 import com.example.olimtube.model.Category;
 import com.example.olimtube.model.User;
+import com.example.olimtube.model.UserCatecory;
 import com.example.olimtube.model.Video;
+import com.example.olimtube.repository.CategoryRepository;
+import com.example.olimtube.repository.UserCatecoryRepository;
 import com.example.olimtube.requestDto.LoginDto;
 import com.example.olimtube.requestDto.SignupRequestDto;
-import com.example.olimtube.responseDto.CheckIdResponseDto;
-import com.example.olimtube.responseDto.LoginResponseDto;
-import com.example.olimtube.responseDto.UserInfoResponseDto;
+import com.example.olimtube.responseDto.*;
 import com.example.olimtube.security.UserDetailsImpl;
 import com.example.olimtube.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -69,19 +74,16 @@ public class UserController {
     }
 
     //구독하기
-    @PutMapping("/subscribe/{video_id}")
-    public void subscribe(@PathVariable Long video_id, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        userService.subscribe(video_id, userDetails);
+    @PostMapping ("/subscribe/{video_id}")
+    public int subscribe(@PathVariable Long video_id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.subscribe(video_id, userDetails);
     }
 
-    //구독한 영상들
+    //구독 채널들
     @GetMapping("/subscribes")
-    public List<Category> subscribesVideo(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return userService.subscribesVideo(userDetails);
+    public List<UserCategoryResponseDto> showSubscribes(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.showSubscribes(userDetails);
+
     }
 
-    @GetMapping("/myvideo/{user_id}")
-    public List<Video> myVideo(@PathVariable Long user_id){
-        return userService.myVideo(user_id);
-    }
 }
