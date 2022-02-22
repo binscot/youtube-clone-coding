@@ -1,10 +1,10 @@
 cloud:
   aws:
     credentials:
-      accessKey: AKIA3MXDCHDGIXATNSUU
-      secretKey: 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
+      accessKey: AKIA4ES5GHOF237WUCHF
+      secretKey: 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
     s3:
-      bucket: youngbin
+      bucket: binscot-bucket
     region:
       static: ap-northeast-2
     stack:

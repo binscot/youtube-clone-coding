@@ -14,12 +14,25 @@
 #        format_sql: true
 #    database-platform: org.hibernate.dialect.MySQL5Dialect
 
+#spring:
+#    h2:
+#      console:
+#        enabled:
+#          true
+#    datasource:
+#      url: jdbc:h2:mem:springcoredb
+#      username: sa
+#      password:
+
 spring:
-    h2:
-      console:
-        enabled:
-          true
-    datasource:
-      url: jdbc:h2:mem:springcoredb
-    username: sa
-    password:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  datasource:
+    url: jdbc:mysql://springboot-db.craud3vucxol.ap-northeast-2.rds.amazonaws.com:3306/olimtube
+    username: binscot
+    password: 11111111
+  jpa:
+    hibernate:
+      ddl-auto: update

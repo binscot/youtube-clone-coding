@@ -83,7 +83,6 @@ public class UserController {
     @GetMapping("/subscribes")
     public List<UserCategoryResponseDto> showSubscribes(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return userService.showSubscribes(userDetails);
-
     }
 
 }

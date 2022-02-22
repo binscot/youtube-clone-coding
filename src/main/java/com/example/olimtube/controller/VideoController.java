@@ -32,10 +32,8 @@ public class VideoController {
 
         String img = "";
         if(!multipartFile.isEmpty()) img = s3Uploader.upload(multipartFile, "static");
-
         User user = userDetails.getUser();
         videoService.uploadVideo(videoRequestDto, img, user);
-
         return ResponseEntity.ok().body(null);
     }
 
