@@ -109,7 +109,7 @@ public class UserService {
         userInfoResponseDto.setId(user.getId());
         userInfoResponseDto.setUsername(user.getUsername());
         userInfoResponseDto.setProfile(user.getProfile());
-        userInfoResponseDto.setIs_login(false);
+        userInfoResponseDto.setIs_login(true);
         userInfoResponseDto.setUserCategoryResponseDtoList(showSubscribes(userDetails));
         return userInfoResponseDto;
     }
