@@ -3,7 +3,6 @@ package com.example.olimtube.service;
 import com.example.olimtube.model.Category;
 import com.example.olimtube.model.User;
 import com.example.olimtube.model.Video;
-import com.example.olimtube.repository.CategoryRepository;
 import com.example.olimtube.repository.UserRepository;
 import com.example.olimtube.repository.VideoRepository;
 import com.example.olimtube.requestDto.VideoRequestDto;
